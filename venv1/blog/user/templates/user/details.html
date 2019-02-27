@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+个人信息
+{% endblock %}
+{% block content %}
+<table class="table table-striped" style="text-align:center ">
+    <tr>
+        <td>用户名</td>
+        <td>密码</td>
+        <td>性别</td>
+        <td>年龄</td>
+        <td>籍贯</td>
+        <td>邮箱</td>
+        <td>地址</td>
+    </tr>
+    <tr>
+        <td>{{request.user.username}}</td>
+        <td>***</td>
+        <td>***</td>
+        <td>***</td>
+        <td>***</td>
+        <td>***</td>
+        <td>***</td>
+        <td ><a href="/user/alter/" class="btn btn-default dropdown-toggle btn-lg">修改密码</a></td>
+    </tr>
+    <tr>
+
+    </tr>
+</table>
+{% endblock %}
