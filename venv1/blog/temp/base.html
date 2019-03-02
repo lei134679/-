@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}首页{% endblock %}</title>
+    {% block style %}
+    {% endblock %}
     <script src="/static/js/jquery-2.2.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/static/js/sjld.js" type="text/javascript" charset="utf-8"></script>
     <script src="/static/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
+    <script type="text/javascript" src='/static/tiny_mce/tiny_mce.js'></script>
+    <script type="text/javascript">
+        tinyMCE.init({
+            'mode':'textareas',
+            'theme':'advanced',
+            'width':650,
+            'height':500
+        });
+
+    </script>
 </head>
 <body>
 {% block top %}
+<div class="top">
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -42,40 +56,48 @@
                     </ul>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" method='get' action="/search/" target="_blank">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" class="form-control" name="q" placeholder="Search">
                 </div>
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">写博客</a></li>
-                {% if request.user.username %}
-                    <li class="dropdown">
+                <li><a href="/user/add_article/">写博客</a></li>
+                {% if user.is_authenticated %}
+                <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{{request.user.username}}<span class="caret"></span></a>
+                       aria-expanded="false">{{user.username}}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/details/">个人资料</a></li>
-                        <li><a href="#">我的博客</a></li>
-                        <li><a href="#">Something else here</a></li>
+                        <li><a href="/user/list_article/">我的博客</a></li>
+                        <li><a href="/user/alter/">修改密码</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/user/user_logout/">退出登录</a></li>
                     </ul>
                 </li>
                 {% else %}
-                    <li><a href="/user/user_login/">登录</a></li>
-				    <li><a href="/user/register/">注册</a></li>
+                <li><a href="/user/user_login/">登录</a></li>
+                <li><a href="/user/register/">注册</a></li>
                 {% endif %}
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-{% endblock %}
-
-<div class="container">
-{% block content %}
-	<h3>继承，待修改！ <span class="label label-default">New</span></h3>
-{% endblock %}
 </div>
+{% endblock %}
+<!--内容-->
+<div class="container">
+    {% block content %}
+    <h3>继承，待修改！ <span class="label label-default">New</span></h3>
+    {% endblock %}
+
+</div>
+<!--结束内容-->
+<!--底部-->
+<!--<nav class="navbar navbar-inverse">-->
+    <!--<p style="height:100px"></p>-->
+<!--</nav>-->
+<!--结束底部-->
 </body>
 </html>

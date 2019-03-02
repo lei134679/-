@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+详情
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h3>{{article.title}}</h3>
+    <p>{{article.content|safe}}</p>
+    {% if article.user_id == u_id %}
+    <p style="text-align:right;">
+        <a class="btn btn-primary btn-lg btn-sm" href="/user/{{article.id}}/update_article/" role="button">修改</a>
+        <a class="btn btn-primary btn-lg btn-sm" onclick="return window.confirm('你确定要删除文章吗？')" href="/user/{{article.id}}/del_article/" role="button">删除</a>
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

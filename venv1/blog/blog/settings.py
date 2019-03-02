@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 
     'user',
     'tinymce',
+    'haystack',
+    'mysearch',
 ]
 
 MIDDLEWARE = [
@@ -128,10 +130,26 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
+# 登录状态路径
 LOGIN_URL = '/user/user_login/'
 
+# 富文本框
 TINYMCE_DEFAULT_CONFIG = {
     'theme': 'advanced',
     'width': 600,
     'height': 400,
 }
+
+# 全文搜索
+HAYSTACK_CONNECTIONS = {
+ 'default': {
+ 'ENGINE': 'mysearch.whoosh_cn_backend.WhooshEngine', # 将来需要修改
+ 'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+ }
+}
+
+# 分页设置
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+
+# 数据同步变化
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

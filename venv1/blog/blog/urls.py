@@ -21,6 +21,7 @@ from user.views import index
 urlpatterns = [
     url('^$', index),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^search/',include("haystack.urls")), # 配置检索的路由
 
     url(r'^user/', include('user.urls', namespace='user')),
     url(r'^admin/', admin.site.urls),

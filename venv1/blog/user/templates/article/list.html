@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}
+success
+{% endblock %}
+{% block content %}
+<table class="table">
+    <tr>
+        <td>编号</td>
+        <td>文章id</td>
+        <td>标题</td>
+    </tr>
+    {% for i in all %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{i.id}}</td>
+        <td><a href="/user/{{i.id}}/detalis_article/">{{i.title}}</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

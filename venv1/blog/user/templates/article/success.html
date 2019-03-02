@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}
+success
+{% endblock %}
+{% block content %}
+<table class="table table-bordered">
+<tr>
+    <td><h2>发布成功。</h2></td>
+</tr>
+    <tr>
+    <td><a href="/user/list_article/" class="btn btn-default dropdown-toggle btn-lg">查看文章</a>
+        <a href="/user/index/" class="btn btn-default dropdown-toggle btn-lg">返回首页</a>
+    </td>
+</tr>
+</table>
+{% endblock %}

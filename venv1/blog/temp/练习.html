@@ -1,0 +1,65 @@
+<!--开发要认真 三思而后行 -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <style type="text/css">
+*{
+margin: 0;
+padding: 0;
+}
+#container{
+margin: 100px auto;
+width: 400px;
+background-color: #808080;
+}
+#kw{
+width: 400px;
+background-color: #CECECE;
+}
+ul{
+/* display: none; */
+}
+ul li{
+list-style: none;
+background-color:#FFC0CB;
+margin-bottom: 1px;
+}
+
+    </style>
+</head>
+<body>
+<div id="container">
+    <input type="text" name="kw" id="kw" value=""/>
+    <ul id="msg">
+    </ul>
+</div>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+var kw = $("#kw");
+kw.keyup(function(){
+$.ajax({
+url:"https://sp0.baidu.com/5bU_dTmfKgQFm2e88IuM_a/w.gif??cb=?",
+type:"get",
+data:{wd:kw.val()},
+dataType:"jsonp",
+success:function(msg){
+$("ul").empty();
+var msgs=msg.s;
+for(var i=0;i<msgs.length;i++){
+var str="<li>"+ msgs[i] +"</li>";
+$("ul").append(str)
+}
+}
+})
+});
+
+</script>
+</body>
+</html>
+<!--同源策略
+Web规范只能在相同域名下获取数据
+如果不同域名下需要跨域
+-->

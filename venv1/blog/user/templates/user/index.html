@@ -1,3 +1,46 @@
 {% extends 'base.html' %}
+{% block style %}
+<style>
+        p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            }
+        #flo{
+            position:fixed;
+            float;
+            top:150px;
+            }
+
+</style>
+{% endblock %}
 {% block content %}
+<div class="row">
+    <div class="col-xs-2">
+        <div id="flo" class="btn-group-vertical" role="group">
+            <button type="button" class="btn btn-default btn-lg">程序人生</button>
+            <button type="button" class="btn btn-default btn-lg">前端</button>
+            <button type="button" class="btn btn-default btn-lg">架构</button>
+            <button type="button" class="btn btn-default btn-lg">区块链</button>
+            <button type="button" class="btn btn-default btn-lg">编程语言</button>
+            <button type="button" class="btn btn-default btn-lg">数据库</button>
+        </div>
+    </div>
+    <div class="col-xs-10">
+        {% for i in article %}
+        <div class="jumbotron">
+            <a href="/user/{{i.id}}/detalis_article/"><h3>{{i.title}}</h3></a>
+            <p>{{i.content|safe}}</p>
+            <p style="font-size:15px">
+                <img style="width:35px" src="/{{i.user.users.img}}" alt="XX" class="img-circle">
+                <span>作者：{{i.user.username}}</span>---------
+                <span style="text-align:right;">修改时间：{{i.last_time}}</span>---------
+                <span style="text-align:right;">发布时间：{{i.create_time}}</span>
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
 {% endblock %}
