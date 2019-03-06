@@ -1,13 +1,18 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.http import JsonResponse
+from django.core.serializers import serialize
+from django.views.decorators.csrf import csrf_exempt
 # 验证码
 from django.http import HttpResponse
 from io import BytesIO
 from . import models
 from . import utils
+# 分页
+from django.core.paginator import Paginator
+from django.conf import settings
 
 # Create your views here.
 from . import models
@@ -15,6 +20,16 @@ from . import models
 """
 ***********************************用户处理***************************************
 """
+@csrf_exempt
+def index1(request):
+    val = request.GET['val']
+    print(val)
+    if val == '全部':
+        at = models.Article.objects.all()
+    else:
+        at = models.ArticleType.objects.filter(type=val)[0].article_set.all()
+    all = serialize('json', at)
+    return HttpResponse(all)
 
 
 def index(request):
@@ -30,8 +45,27 @@ def index(request):
         #     return render(request, 'user/index.html', {"article":article})
         # except:
         #     pass
-        article = models.Article.objects.all().order_by("-id")
-        return render(request, 'user/index.html', {"article": article})
+        pk = request.GET.get('pk')
+        article = models.Article.objects.all().order_by("-create_time")
+        if pk == '0':
+            article = models.Article.objects.all().order_by("-create_time")
+        elif pk == '1':
+            article = models.ArticleType.objects.filter(pk=pk)[0].article_set.all()
+        elif pk == '2':
+            article = models.ArticleType.objects.filter(pk=pk)[0].article_set.all()
+        elif pk == '3':
+            article = models.ArticleType.objects.filter(pk=pk)[0].article_set.all()
+        elif pk == '4':
+            article = models.ArticleType.objects.filter(pk=pk)[0].article_set.all()
+        elif pk == '5':
+            article = models.ArticleType.objects.filter(pk=pk)[0].article_set.all()
+        elif pk == '6':
+            article = models.ArticleType.objects.filter(pk=pk)[0].article_set.all()
+        pageSize = settings.PAGESIZE
+        result = request.GET.get('num', default=1)
+        paginator = Paginator(article, pageSize)
+        page = paginator.page(int(result))
+        return render(request, 'user/index.html', {"page":page})
 
 
 def register(request):
@@ -80,7 +114,7 @@ def register(request):
                     return render(request, 'user/login.html')
                 except:
                     models.Users(age=age, gender=gender, phone=phone, addr=addrs, user=user).save()
-                return render(request, 'user/login.html')
+                    return render(request, 'user/login.html')
             except Exception as e:
                 print(e)
                 return render(request, 'user/register.html', {'mag': '输入有误'})
@@ -195,11 +229,16 @@ def data(request, id):
             # print(age, gender, phone, addrs)
             try:
                 image = request.FILES['image']
-                models.Users.objects.filter(pk=id).update(age=age, gender=gender, phone=phone, addr=addrs,img=image, user=request.user)
-                return render(request, 'user/details.html')
+                user = models.Users.objects.get(pk=id)
+                user.age, user.gender, user.phone, user.addr, user.img = age, gender, phone, addrs, image
+                user.save()
+                return redirect('/user/details/')
             except:
-                models.Users.objects.filter(pk=id).update(age=age, gender=gender, phone=phone, addr=addrs, user=request.user)
-                return render(request, 'user/details.html')
+                user = models.Users.objects.get(pk=id)
+                user.age, user.gender, user.phone, user.addr = age, gender, phone, addrs
+                user.save()
+                print(user)
+                return redirect('/user/details/')
 
 
 # 验证码
@@ -226,19 +265,22 @@ def add_article(request):
     :return:
     """
     if request.method == 'GET':
-        return render(request, 'article/add.html')
+        type = models.ArticleType.objects.all()
+        return render(request, 'article/add.html', {'type':type})
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
-        print(title, content)
+        type = request.POST['type']
+        # print(title, content)
         if len(title) == 0:
             return render(request, 'article/add.html', {'mag': '标题不能为空'})
         elif len(content) < 5:
             return render(request, 'article/add.html', {'mag': '内容必须大于5个字符'})
         else:
             try:
+                type_id = models.ArticleType.objects.get(type=type).id
                 user_id = request.user.id
-                models.Article(title=title, content=content, user_id=user_id).save()
+                models.Article(title=title, content=content, user_id=user_id, type_id=type_id).save()
                 return render(request, 'article/success.html')
             except Exception as e:
                 print(e)
@@ -270,18 +312,42 @@ def list_article(request):
 
 def detalis_article(request, id):
     """
-    文章详情页面
+    所有文章详情页面
     :param request:
     :return:
     """
     if request.method == 'GET':
         article = models.Article.objects.filter(pk=id)[0]
-        try:
-            u_id = request.user.id
-            return render(request, 'article/details.html', {"article": article, 'u_id': u_id})
-        except:
-            u_id = -1
-            return render(request, 'article/details.html', {"article": article, 'u_id': u_id})
+        art_com = article.comment_set.all()
+        return render(request, 'article/details.html', {"article": article, 'art_com':art_com})
+    if request.method == 'POST':
+        comment = request.POST['comment']
+        com_id = request.POST['com_id']
+        print(comment,1, com_id)
+        if comment == '':
+            return redirect(reverse('user:detalis_article', args=id))
+        elif com_id == '':
+            models.Comment(content=comment, art_cont_id=id, user_cont_id=request.user.id).save()
+            return redirect(reverse('user:detalis_article', args=id))
+        else:
+            models.Comment(content=comment, art_cont_id=id, null_id=com_id, user_cont_id=request.user.id).save()
+            return redirect(reverse('user:detalis_article', args=id))
+
+
+
+
+def my_detalis_article(request, id):
+    """
+    个人文章详情
+    :param request:
+    :param id:
+    :return:
+    """
+    if request.method == 'GET':
+        article = models.Article.objects.filter(pk=id)[0]
+        art_com = article.comment_set.all()
+        # print(art_com)
+        return render(request, 'article/my_details.html', {"article": article, 'art_com': art_com})
 
 
 @login_required
@@ -306,20 +372,24 @@ def update_article(request, id):
     :return:
     """
     if request.method == 'GET':
+        type = models.ArticleType.objects.all()
         article = models.Article.objects.filter(pk=id)[0]
-        return render(request, 'article/update.html', {'article': article})
+        return render(request, 'article/update.html', {'article': article, 'type':type})
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
-        print(title, content)
+        type = request.POST['type']
+        # print(title, content)
         if len(title) == 0:
-            return render(request, 'article/add.html', {'mag': '标题不能为空'})
+            return redirect('/user/%s/update_article/' % id)
+            # return render(request, 'article/update.html', {'mag': '标题不能为空'})
         elif len(content) < 5:
-            return render(request, 'article/add.html', {'mag': '内容必须大于5个字符'})
+            return redirect('/user/%s/update_article/' % id)
         else:
             try:
-                models.Article.objects.filter(pk=id).update(title=title, content=content, last_time=datetime.now())
-                return redirect('/user/%s/detalis_article/' % id)
+                type_id = models.ArticleType.objects.get(type=type).id
+                models.Article.objects.filter(pk=id).update(title=title, content=content, last_time=datetime.now(), type_id=type_id)
+                return redirect('/user/%s/my_detalis_article/' % id)
             except Exception as e:
                 print(e)
                 return redirect('/user/%s/update_article/' % id)

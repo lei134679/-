@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}
+详情
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h3>{{article.title}}</h3>
+    <img style="width:35px" src="/{{article.user.users.img}}" alt="XX" class="img-circle">
+    <span>作者：{{article.user.username}}</span>---------
+    <span>修改时间：{{article.last_time}}</span>---------
+    <span>发布时间：{{article.create_time}}</span>--------
+    <span>文章类型：{{article.type.type}}</span>
+    <p>{{article.content|safe}}</p>
+    <p style="height:50px"></p>
+    <hr>
+    {% for i in art_com %}
+    <p><small class="com">{{i.content}}</small></p>
+    {% endfor %}
+
+    <p style="text-align:right;">
+    <a class="btn btn-primary btn-lg btn-sm" href="/user/{{article.id}}/update_article/" role="button">修改</a>
+    <a class="btn btn-primary btn-lg btn-sm" onclick="return window.confirm('你确定要删除文章吗？')" href="/user/{{article.id}}/del_article/" role="button">删除</a>
+    </p>
+
+</div>
+<script>
+    $(".com").on('click', function(){
+        var text = $(this).text()
+        $('.form-control').val(text)
+    })
+</script>
+{% endblock %}

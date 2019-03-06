@@ -5,11 +5,14 @@
     <title>{% block title %}首页{% endblock %}</title>
     {% block style %}
     {% endblock %}
-    <script src="/static/js/jquery-2.2.3.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/js/sjld.js" type="text/javascript" charset="utf-8"></script>
-    <script src="/static/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css"/>
-    <script type="text/javascript" src='/static/tiny_mce/tiny_mce.js'></script>
+    {% block static %}
+    {% load static %}
+    {% endblock %}
+    <script src="{% static 'js/jquery_1.9.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/sjld.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+    <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce.js' %}"></script>
     <script type="text/javascript">
         tinyMCE.init({
             'mode':'textareas',

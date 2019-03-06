@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-success
+文章列表
 {% endblock %}
 {% block content %}
 <table class="table">
@@ -8,12 +8,14 @@ success
         <td>编号</td>
         <td>文章id</td>
         <td>标题</td>
+        <td>文章类型</td>
     </tr>
     {% for i in all %}
     <tr>
         <td>{{ forloop.counter }}</td>
         <td>{{i.id}}</td>
-        <td><a href="/user/{{i.id}}/detalis_article/">{{i.title}}</a></td>
+        <td><a href="/user/{{i.id}}/my_detalis_article/">{{i.title}}</a></td>
+        <td>{{i.type.type}}</td>
     </tr>
     {% endfor %}
 </table>

@@ -15,6 +15,11 @@ class Users(models.Model):
     user = models.OneToOneField(User, on_delete=models.Model, verbose_name='关联')
 
 
+class ArticleType(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='类型id')
+    type = models.CharField(max_length=100, verbose_name='文章类型')
+
+
 class Article(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='编号')
     title = models.CharField(max_length=255, verbose_name='标题')
@@ -22,3 +27,12 @@ class Article(models.Model):
     last_time = models.DateTimeField(auto_now=True, verbose_name='上次修改时间')
     content = HTMLField(verbose_name='内容')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
+    type = models.ForeignKey(ArticleType, on_delete=models.CASCADE, verbose_name='所属类型')
+
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True, verbose_name='评论编号')
+    content = models.CharField(max_length=255, verbose_name='评论内容')
+    null = models.ForeignKey('self', null=True, verbose_name='评论')
+    user_cont = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='用户评论')
+    art_cont = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='评论文章')

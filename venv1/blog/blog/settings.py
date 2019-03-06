@@ -153,3 +153,6 @@ HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
 
 # 数据同步变化
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# 每页显示数
+PAGESIZE = 4

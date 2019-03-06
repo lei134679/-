@@ -12,35 +12,89 @@
             top:150px;
             }
 
+
+
 </style>
 {% endblock %}
 {% block content %}
+
 <div class="row">
     <div class="col-xs-2">
         <div id="flo" class="btn-group-vertical" role="group">
-            <button type="button" class="btn btn-default btn-lg">程序人生</button>
-            <button type="button" class="btn btn-default btn-lg">前端</button>
-            <button type="button" class="btn btn-default btn-lg">架构</button>
-            <button type="button" class="btn btn-default btn-lg">区块链</button>
-            <button type="button" class="btn btn-default btn-lg">编程语言</button>
-            <button type="button" class="btn btn-default btn-lg">数据库</button>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=0">全部</a>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=1">人工智能</a>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=2">移动开发</a>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=3">数据库</a>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=4">前端</a>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=5">后端</a>
+            <a class="btn btn-default btn-lg" href="/user/index/?pk=6">编程语言</a>
         </div>
     </div>
     <div class="col-xs-10">
-        {% for i in article %}
+        {% if page.paginator.content %}
+        啥也没有
+        {% endif %}
+        {% for i in page.object_list %}
         <div class="jumbotron">
             <a href="/user/{{i.id}}/detalis_article/"><h3>{{i.title}}</h3></a>
             <p>{{i.content|safe}}</p>
             <p style="font-size:15px">
                 <img style="width:35px" src="/{{i.user.users.img}}" alt="XX" class="img-circle">
-                <span>作者：{{i.user.username}}</span>---------
-                <span style="text-align:right;">修改时间：{{i.last_time}}</span>---------
-                <span style="text-align:right;">发布时间：{{i.create_time}}</span>
+                <span>作者：{{i.user.username}}</span>-------
+                <span>修改时间：{{i.last_time}}</span>-------
+                <span>发布时间：{{i.create_time}}</span>------
+                <span>文章类型：{{i.type.type}}</span>
             </p>
         </div>
         {% endfor %}
+        <!--分页-->
+        <div class="text-center">
+            <nav aria-label="Page navigation">
+            <ul class="pagination pagination-lg">
+                {% if page.has_previous %}
+                <li>
+                    <a href="/user/index/?num={{ page.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="disabled">
+                        <span aria-hidden="true">&laquo;</span>
+                </li>
+                {% endif %}
+                {% for i in page.paginator.page_range %}
+                <li><a href="/user/index/?num={{i}}">{{i}}</a></li>
+                {% endfor %}
+                {% if page.has_next %}
+                <li>
+                    <a href="/user/index/?num={{ page.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="disabled">
+                        <span aria-hidden="true">&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        </div>
+        <!--结束分页-->
     </div>
 
 </div>
-
+<!--<script type="text/javascript">-->
+    <!--$(".btn").on("click", function(){-->
+        <!--var type = $(this).text()-->
+        <!--$.ajax({-->
+        <!--url:'/user/index1/',-->
+        <!--type:'get',-->
+        <!--data:{'val':type},-->
+        <!--dataType:'json',-->
+        <!--success:function(data){-->
+        <!--alert(data)},-->
+        <!--})-->
+    <!--})-->
+<!--</script>-->
 {% endblock %}
+

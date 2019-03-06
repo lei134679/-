@@ -23,6 +23,7 @@ from . import views
 
 urlpatterns = [
     # *****************用户处理****************************
+    url(r'^index1/$', views.index1, name='index1'),
     url(r'^index/$', views.index, name='index'),
     url(r'^user_login/$', views.user_login, name='user_login'),
     url(r'^user_logout/$', views.user_logout, name='user_logout'),
@@ -37,6 +38,7 @@ urlpatterns = [
     url(r'^success_article/$', views.success_article, name='success_article'),
     url(r'^list_article/$', views.list_article, name='list_article'),
     url(r'^(\d+)/detalis_article/$', views.detalis_article, name='detalis_article'),
+    url(r'^(\d+)/my_detalis_article/$', views.my_detalis_article, name='my_detalis_article'),
     url(r'^(\d+)/del_article/$', views.del_article, name='del_article'),
     url(r'^(\d+)/update_article/$', views.update_article, name='update_article'),
 ]
