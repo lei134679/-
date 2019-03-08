@@ -11,7 +11,11 @@
     <script src="{% static 'js/jquery_1.9.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/sjld.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/bootstrap.js' %}" type="text/javascript" charset="utf-8"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'font-awesome-4.7.0/css/font-awesome.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>
+    <link rel="shortcut icon" href="{%static 'ico/panda.ico'  %}" />
+
     <script type="text/javascript" src="{% static 'tiny_mce/tiny_mce.js' %}"></script>
     <script type="text/javascript">
         tinyMCE.init({
@@ -37,14 +41,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Hi Blog</a>
+            <i class="fa fa-opencart navbar-brand" aria-hidden="true"></i>
+            <!--<a class="navbar-brand" href="#">Hi Blog</a>-->
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">首页 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
+                <li><a href="/user/game/">小游戏</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -66,11 +71,11 @@
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/user/add_article/">写博客</a></li>
+                <li><a href="/user/add_article/"><i class="fa fa-columns" aria-hidden="true"> 写博客</i></a></li>
                 {% if user.is_authenticated %}
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false">{{user.username}}<span class="caret"></span></a>
+                       aria-expanded="false"><i class="fa fa-user fa-lg" aria-hidden="true"> {{user.username}}</i><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="/user/details/">个人资料</a></li>
                         <li><a href="/user/list_article/">我的博客</a></li>

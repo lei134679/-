@@ -5,14 +5,22 @@
 {% block content %}
 <div class="jumbotron">
     <h3>{{article.title}}</h3>
-    <img style="width:35px" src="/{{article.user.users.img}}" alt="XX" class="img-circle">
-    <span>作者：{{article.user.username}}</span>---------
-    <span>修改时间：{{article.last_time}}</span>---------
-    <span>发布时间：{{article.create_time}}</span>--------
-    <span>文章类型：{{article.type.type}}</span>
+    <table class="table" style="font-size:5px">
+        <tr>
+            <td><img style="width:35px" src="/{{article.user.users.img}}" alt="XX" class="img-circle"></td>
+            <td><span>作者：{{article.user.username}}</span></td>
+            <td><span>修改时间：{{article.last_time}}</span></td>
+            <td><span>发布时间：{{article.create_time}}</span></td>
+            <td><span>文章类型：{{article.type.type}}</span></td>
+            <td><span>评论数：{{article.comment_set.all|length}}</span></td>
+        </tr>
+    </table>
+
     <p>{{article.content|safe}}</p>
+
     <p style="height:50px"></p>
     <hr>
+    <!--评论-->
     {% for i in art_com %}
     <p>
         {% if i.user_cont_id == i.null.user_cont_id %}
@@ -31,33 +39,37 @@
         {% csrf_token %}
         <div class="form-group">
             <input type="hidden" id="put" name="com_id" value="">
-            <input style="width:100px" type="text" class="form-control text-right" value=":" disabled>
+            <input style="width:100px; display:none;" type="text" class="form-control text-right" value=":" disabled>
             <div class="form-group">
                 <input type="text" id="comment" class="form-control" name="comment">
             </div>
             <button type="submit" class="btn btn-default">评论</button>
         </div>
     </form>
-    <!--<button class="btn btn-primary">评论</button>-->
+    <!--结束评论-->
 </div>
 <script>
+    <!--评论-->
     $(".com").on('click', function(){
         var text = $(this).text()
         var inp = $('.text-right')
         if ('回复'+text+':'==inp.val()){
-        inp.val(':')
-        $("#put").val('')
-        }
+            inp.val(':')
+            inp.css('display','none')
+            $("#put").val('')
+            }
         else{
-        inp.val('回复'+text+':')
-        $("#put").val($(this).next().text())
+            inp.css('display','')
+            inp.val('回复'+text+':')
+            $("#put").val($(this).next().text())
         }
     })
-    $(".btn-primary").on('click', function(){
-        var com_id = $('#put').text()
-        var comment = $('#comment').text()
-        alert(com_id+comment)
-    })
+    <!--结束评论-->
+    <!--$(".btn-primary").on('click', function(){-->
+        <!--var com_id = $('#put').text()-->
+        <!--var comment = $('#comment').text()-->
+        <!--alert(com_id+comment)-->
+    <!--})-->
 </script>
 {% endblock %}
 

@@ -18,6 +18,8 @@ class Users(models.Model):
 class ArticleType(models.Model):
     id = models.AutoField(primary_key=True, verbose_name='类型id')
     type = models.CharField(max_length=100, verbose_name='文章类型')
+    def __str__(self):
+        return self.type
 
 
 class Article(models.Model):
@@ -28,6 +30,8 @@ class Article(models.Model):
     content = HTMLField(verbose_name='内容')
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
     type = models.ForeignKey(ArticleType, on_delete=models.CASCADE, verbose_name='所属类型')
+    def __str__(self):
+        return self.title
 
 
 class Comment(models.Model):
@@ -36,3 +40,5 @@ class Comment(models.Model):
     null = models.ForeignKey('self', null=True, verbose_name='评论')
     user_cont = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='用户评论')
     art_cont = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='评论文章')
+    def __str__(self):
+        return self.content

@@ -23,6 +23,7 @@ from . import views
 
 urlpatterns = [
     # *****************用户处理****************************
+    url(r'^game/$', views.game),
     url(r'^index1/$', views.index1, name='index1'),
     url(r'^index/$', views.index, name='index'),
     url(r'^user_login/$', views.user_login, name='user_login'),

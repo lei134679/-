@@ -20,6 +20,15 @@ from . import models
 """
 ***********************************用户处理***************************************
 """
+def game(req):
+    """
+    魔方小游戏
+    :param req:
+    :return:
+    """
+    return render(req, 'game.html')
+
+
 @csrf_exempt
 def index1(request):
     val = request.GET['val']
