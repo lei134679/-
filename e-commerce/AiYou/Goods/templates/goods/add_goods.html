@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block title %}
+个人信息
+{% endblock %}
+{% load static %}
+{% block head %}
+<link type="text/css" href="{% static 'pc/www/css/myCenter.css' %}"
+      rel="stylesheet"/>
+{% endblock %}
+
+
+{% block content %}
+<div class="wrap  posR mg_t20 mH810 pd_b40">
+    <div class="per_left">
+        <div class="per_leftbox  pd_t14">
+            <ul class="per_leftul">
+                <li class="t_c">
+                    <a href="Profile.html">
+
+                        <img src="/{{user.users.header}}" alt=""
+                             onerror="javascript:this.src='pc/www/img/avatar/head_150.png'"
+                             style="width: 150px; height: 150px"/>
+                    </a>
+                </li>
+                <li class="f14 col_fff mg_t10 t_c">{{user.users.mickname}}</li>
+            </ul>
+        </div>
+        <div class="per_leftbox">
+            <div class="perleft_menu pdtb_20">
+                <ul>
+                    <li class=" "><a href="MyOrder.html"><i class="f_r mcMIcon3 inline"></i>我的订单</a></li>
+                    <li class=" "><a href="MyRefunds.html"><i class="f_r mcMIcon4 inline"></i>退款管理</a></li>
+                    <!--<li class=" "><a href="/MyCenter/MyIncomeRules.html" ><i class="f_r mcMIcon5 inline"></i>我的收益</a></li>-->
+                    <li class=" "><a href="{% url 'users:u_message' %}"><i class="f_r mcMIcon8 inline"></i>个人设置</a></li>
+                    <li class="a_check "><a href="{% url 'store:my_store' %}"><i
+                            class="f_r mcMIcon8 inline"></i>我的店铺</a></li>
+                    <!-- <div class="div_line"></div> -->
+                    <!-- <a href="#"><i class="f_r mcMIcon9 inline"></i>设计师主页</a> <a
+                        href="#"><i class="f_r mcMIcon10 inline"></i>设计师提现</a> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="per_right_out backg_fff">
+        <div class="per_right ">
+            <div class="">
+                <div class="relative">
+                    <h4 class="nTitle">店铺管理</h4>
+                    <h3 class="per_title">
+                        <a class="a_checked" href="{% url 'store:on_store' %}"><span>注册店铺</span></a>
+                        <a class="" href="{% url 'store:my_store' %}"><span>我的店铺</span></a>
+                    </h3>
+                </div>
+                <div class="pd10 bd_b_eee">
+                    <h4 class="f14 col_666 mg_t20">基本信息</h4>
+                    <h1 style="color:green">{{success}}</h1>
+                    <form method="post" id="submitForm" action="{% url 'goods:add_goods' store_id %}"
+                          onsubmit="return check()" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <table cellspacing="0" cellpadding="0" border="0"
+                               class="per_table th80">
+                            <tbody>
+                            <tr>
+                                <th>商品名称：</th>
+                                <td><input id="name" type="text" placeholder="请输入店铺名称" autocomplete="off"
+                                           class="inpCom w200" name="name"></td>
+                            </tr>
+                            <tr>
+                                <th>商品单价：</th>
+                                <td><input type="text" autocomplete="off" class="inpCom w200" name="price" id="price"
+                                           onkeyup="this.value=this.value.toString().match(/^\d+(?:\d{0,0})?/)"></td>
+                            </tr>
+                            <tr>
+                                <th>商品库存：</th>
+
+                                <td>
+                                    <input type="text" autocomplete="off" class="inpCom w200" name="stock" id="stock"
+                                           onkeyup="this.value=this.value.toString().match(/^\d+(?:\d{0,0})?/)">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>商品数量：</th>
+                                <td>
+                                    <input type="text" autocomplete="off" class="inpCom w200" name="count" id="count">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>商品介绍：</th>
+                                <td>
+                                    <textarea style="height:100px" class="inpCom w200" name="desc" id="desc">
+                                    </textarea>
+                                </td>
+                            </tr>
+                            <tr>
+
+                            <tr>
+                                <th>商品类型：</th>
+                                <td>
+                                    <select name="type1" id="type1">
+                                        <option value="">请选择一级类型</option>
+                                        {% for i in goodstype %}
+                                        <option value="{{i.id}}">{{i.gt_name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select name="type2" id="type2">
+                                        <option value="">请选择二级类型</option>
+                                    </select><span style="color:red">{{mag}}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>商品图片：</th>
+                                <td id="imgs">
+                                    <input type="hidden" name="num" id="num" value="1">
+                                    <input type="file" name="img1" id="img1">
+                                    <input type="radio" name="default" value="img1" checked>默认
+
+                                    <br>
+                                </td>
+                                <td>
+                                    <a id="img" class="btnCom1 btnComS btnBg2 btnH1 w80 inline J_save">点击添加图片</a>
+                                    <span style="color:red" id="mag"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <p class="per_imgp clearfix mg_l40">
+                            <input type="submit" class="btnCom1 btnComS btnBg2 btnH1 w80 inline J_save">
+
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var num = 2
+    $('#img').click(function(){
+        var dianji = '#img'+(num-1)
+        console.info(dianji)
+        if($(dianji).val() != ''){
+            $('#mag').text('')
+            var name = 'img'+num
+            $('#imgs').append('<input type="file" name='+name+' id='+name+'><input type="radio" name="default" value='+name+'>默认<br>')
+            $('#num').val(num)
+            num ++;
+        }
+        else{
+            $('#mag').text('请选择图片在点击！！！')
+        }
+
+    })
+
+</script>
+
+
+<script>
+    $('#type1').change(function(){
+        var num = $(this).val()
+        console.info(num)
+        $.ajax({
+            url:"/goods/ajax_type/",
+            type:"GET",
+            dataType:"json",
+            data:{"type_id":num},
+            success:function(data){
+                $("#type2").empty()
+                for(var i in data){
+                    var type_id = data[i]['pk']
+                    var type_name = data[i]['fields']['gt_name']
+                    $("#type2").append('<option value=' + type_id + '>' + type_name + '</option>')
+                }
+            }
+        })
+    })
+
+
+</script>
+<script type="text/javascript">
+function check(){
+        var username = $('#name').val()
+        var mickname = $('#price').val()
+        var password = $('#stock').val()
+        var password1 = $('#count').val()
+        if(username == '' || mickname == '' || password == '' || password1 == ''){
+            alert("文本框输入为空，不能提交表单！");
+            return false;
+        }
+    }
+
+
+</script>
+
+
+{% endblock %}

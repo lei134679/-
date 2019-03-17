@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}
+个人信息
+{% endblock %}
+{% load static %}
+{% block head %}
+<link type="text/css" href="{% static 'pc/www/css/myCenter.css' %}"
+      rel="stylesheet"/>
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<link type="text/css" href="{% static 'pc/www/css/myCenter.css' %}" rel="stylesheet"/>
+<script src="js/jquery_1.9.js"></script>
+<script src="js/bootstrap.js"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="wrap  posR mg_t20 mH810 pd_b40">
+    <div class="per_left">
+        <div class="per_leftbox  pd_t14">
+            <ul class="per_leftul">
+                <li class="t_c">
+                    <a href="Profile.html">
+
+                        <img src="/{{user.users.header}}" alt=""
+                             onerror="javascript:this.src='pc/www/img/avatar/head_150.png'"
+                             style="width: 150px; height: 150px"/>
+                    </a>
+                </li>
+                <li class="f14 col_fff mg_t10 t_c">{{user.users.mickname}}</li>
+            </ul>
+        </div>
+        <div class="per_leftbox">
+            <div class="perleft_menu pdtb_20">
+                <ul>
+                    <li class=" "><a href="MyOrder.html"><i class="f_r mcMIcon3 inline"></i>我的订单</a></li>
+                    <li class=" "><a href="MyRefunds.html"><i class="f_r mcMIcon4 inline"></i>退款管理</a></li>
+                    <!--<li class=" "><a href="/MyCenter/MyIncomeRules.html" ><i class="f_r mcMIcon5 inline"></i>我的收益</a></li>-->
+                    <li class=" "><a href="{% url 'users:u_message' %}"><i class="f_r mcMIcon8 inline"></i>个人设置</a></li>
+                    <li class="a_check "><a href="{% url 'store:my_store' %}"><i
+                            class="f_r mcMIcon8 inline"></i>我的店铺</a></li>
+                    <!-- <div class="div_line"></div> -->
+                    <!-- <a href="#"><i class="f_r mcMIcon9 inline"></i>设计师主页</a> <a
+                        href="#"><i class="f_r mcMIcon10 inline"></i>设计师提现</a> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="per_right_out backg_fff">
+        <div class="per_right ">
+            <div class="">
+                <div class="relative">
+                    <h4 class="nTitle">店铺管理</h4>
+                    <h3 class="per_title">
+                        <a class="" href="{% url 'store:on_store' %}"><span>注册店铺</span></a>
+                        <a class="a_checked" href="{% url 'store:my_store' %}"><span>我的店铺</span></a>
+                    </h3>
+                </div>
+
+                <img src="/{{store.cover}}" style="width:100%; height:250px">
+                <table class="table text-center" style="font-size:17px;">
+                    <tr>
+                        <td>店铺名称</td>
+                        <td>注册时间</td>
+                        <td>店铺状态</td>
+                        <td>店铺描述</td>
+                        <!--<td>操作</td>-->
+
+                    </tr>
+                    <tr>
+                        <td>{{store.name|truncatechars:30 }}</td>
+                        <td>{{store.opener_time}}</td>
+                        <td>{{store.status}}</td>
+                        <td>{{store.intro|truncatechars:142}}</td>
+                        <!--<td><a href="">上架商品</a></td>-->
+                    </tr>
+                </table>
+                <div class="pd10 bd_b_eee">
+                    <h4 class="nTitle">店铺商品</h4>
+                    <div class="row">
+                        {% for i in goods %}
+                        <div class="col-xs-3">
+                            {% for j in i.goodsimage_set.all %}
+                                {% if j.status %}
+                                    <img src="/{{j.path}}" class="img-rounded" style="width:220px; height:200px" alt="">
+                                {% endif %}
+                            {% endfor %}
+                            <table border="0" cellspacing="0" cellpadding="0" style="width:220px" class="perTableTitle1">
+                                <tbody>
+                                <tr>
+                                    <td width="50%">店铺名:{{i.name}}</td>
+                                    <td width="50%">单价:{{i.price}}￥</td>
+                                </tr>
+                                <tr>
+                                    <td width="50%">库存:{{i.stock}}件</td>
+                                    <td width="50%">数量:{{i.count}}件</td>
+                                </tr>
+                                <tr>
+                                    <td width="50%">商品类型:{{i.goods_detail_type.gt_name|truncatechars:4}}</td>
+                                    <td width="50%">商品介绍: {{i.desc|truncatechars:0}}</td>
+                                </tr>
+                                <tr>
+                                    <td><a href="{% url 'goods:alt_goods' i.id store.id %}">/ 修改</a> /</td>
+                                    <td><a href="{% url 'goods:del_goods' i.id store.id %}" onclick="return window.confirm('你确定要删除吗？')">/ 删除 /</a></td>
+                                </tr>
+                                </tbody>
+                                </table>
+
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

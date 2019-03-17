@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}
+登录
+{% endblock %}
+{% block top %}
+{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="bd_bottom_ea">
+    <div class="wrap pub_logo_box clearfix">
+        <div class="pub_logo f_l"><a href="/home/index.html"><img alt="" src="{% static 'pc/www/img/logo.png' %}"></a></div>
+        <div class="f_r">
+            <ul class="sizeZero merchant_info_box">
+                <li class="inline mg_l40 mg_t40">
+                    <span class="inline col_8c8">欢迎来到必要，请 </span><a class="col_8c8 inline mg_l5" href="{% url 'users:u_login' %}">登录 </a><span class="col_8c8 mg_l5 mg_r5 inline">|</span><a class="col_8c8 inline" href="{% url 'users:u_register' %}">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="wrap h580">
+    <div class="loginItem auto ">
+        <form class="loginBox" method="post" action="{% url 'users:u_login' %}">
+            {% csrf_token %}
+            <div class="inline loginTitBox"><i class="inline loginListBg spIcon mg_r10"></i><span class="inline">用户登录</span></div>
+            <dl class="mg_t20 ">
+                <!-- <dt class="inline">账号：</dt> -->
+                <dd class="inline mg_r5">
+                    <input placeholder="请输入您的账号" type="text" name="username"  class=" loginTxt  w360 col_999"  />
+                </dd>
+            </dl>
+            <dl class=" mg_t20 ">
+                <dd class="inline mg_r5">
+                    <input type="password" name="password" placeholder="请输入您的密码"   class=" loginTxt w360 col_999"/>
+                </dd>
+            </dl>
+
+            <dl class="mg_t20">
+                    <!-- 	<dt class="inline">验证码：</dt> -->
+                    <dd class="inline mg_r5">
+                        <input type="text"  placeholder="请输入验证码"  name="yzm"  class="loginTxt w200 col_999  border" />
+                        <!--<input type="button" class="setCodeBtn" style="margin-left: 17px;" />-->
+                        <img src="{% url 'users:create_code_img' %}" class="setCodeBtn" style="margin-left: 17px;" alt="" onclick="refresh_check_code(this)">
+                        <span style="color:red">{{mag}}</span>
+                    </dd>
+                </dl>
+
+            <dl class="mg_t20 w400 relative">
+                <!-- <dt class="inline">&nbsp</dt> -->
+                <dd class="inline">
+                    <span class="inline mg_r10 "><i class="openIcon inline mg_r10" name="checkRememberMe"></i><span class="inline col_8a8a8a">下次自动登录</span></span>
+                    <a class="inline col_link boxR">忘记密码</a>
+                </dd>
+            </dl>
+            <input type="submit"  class="J_login_btn loginBtn w400  inline t_c mg_t10" value="登录"/> <br/><span style="color:red">{{ mag }}</span>
+
+            <div class="w400 mg_t40">
+                <p class="sizeZero">
+                    <span class="col_666 f14 mg_r10 inline">使用第三方账号登录：</span>
+                    <!-- 	   			<a onclick="return window.open('https://graph.qq.com/oauth2.0/authorize?client_id=101235242&response_type=token&scope=all&redirect_uri=http%3A%2F%2Fqzonestyle.gtimg.cn%2Fqzone%2Fopenapi%2Fredirect.html', 'oauth2Login_10000' ,'height=525,width=585, toolbar=no, menubar=no, scrollbars=no, status=no, location=yes, resizable=yes')" href="javascript:;" class="inline pd_r10 qq_login"> QQ</a> -->
+                    <a class="inline weix_login" href="https://open.weixin.qq.com/connect/qrconnect?appid=wx80d97d6a31aaa448&redirect_uri=list.html#account/weixinlogin.html?returnUrl=index.html&response_type=code&scope=snsapi_login&state=123#wechat_redirect" style="border-left:1px solid #ddd">微信</a>
+                    <a  class="qq_login inline mg_l10 "href="javascript:void(0);" onclick="qqLogin();" >qq</a>
+                </p>
+            </div>
+
+        </form>
+    </div>
+</div>
+<script>
+ function refresh_check_code(node) {
+ // src 后面加问号会自动刷新验证码 img 的 src
+// get 请求方式缓存处理
+ node.src = '/formtest/code/?search=' + Math.random();
+ }
+</script>
+
+{% endblock %}

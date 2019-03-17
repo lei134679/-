@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta property="wb:webmaster" content="8eabb156d1a9cb46">
+    <title>必要平台-购物车 – 我要的，才是必要的 – 必要biyao.com</title>
+    {% load static %}
+    <link href="{% static 'pc/favicon.ico' %}" rel="shortcut icon" type="image/x-icon" />
+    <link href="{% static 'pc/favicon.ico' %}" rel="icon" type="image/x-icon" />
+    <link href="{% static 'pc/common/css/common.css' %}?v=biyao_9cf87cc" rel="stylesheet"/>
+    <link href="{% static 'pc/www/css/cm_www.css' %}?v=biyao_c0d1bd0" rel="stylesheet"/>
+    <link href="{% static 'pc/buy/css/newBuy.css' %}?v=biyao_dac4785" rel="stylesheet"/>
+    <script type="text/javascript">
+        window.basePath = "";
+        window.ControllerSite = "http://www.biyao.com";
+        var ua = navigator.userAgent.toLowerCase();
+        var isiOS = navigator.userAgent.match('iPad')||navigator.userAgent.match('iPhone')||navigator.userAgent.match('iPod'),isAndroid=navigator.userAgent.match('Android'),isDesktop = !isiOS&&!isAndroid;
+        if (isiOS||isAndroid) {
+            if(window.location.href.toString().indexOf("www.biyao.com/product/")>0){//如果现在进的是编辑器页
+                var designId=(window.location.href.toString()).substr(parseInt(window.location.href.toString().indexOf("www.biyao.com/product/"))+"www.biyao.com/product/".length,4);//获得样例ID
+                window.location.href="http://m.biyao.com/product/show?designid="+designId;
+            }
+        }
+    </script>
+    <script type="text/javascript" src="{% static 'pc/common/js/jquery-1.8.3.js' %}?v=biyao_7d074dc"></script>
+    <script type="text/javascript" src="{% static 'pc/common/js/jquery.extention.js' %}?v=biyao_98daa33"></script>
+    <script type="text/javascript" src="{% static 'pc/common/js/jquery.cookie.js' %}?v=biyao_a5283b2"></script>
+    <script type="text/javascript" src="{% static 'pc/common/js/common.js' %}?v=biyao_52bff81"></script>
+    <script type="text/javascript" src="{% static 'pc/common/js/ui/dialog.js' %}?v=biyao_ba57fb5"></script>
+    <script type="text/javascript" src="{% static 'pc/common/js/ui/select.js' %}?v=biyao_1dcaa7c"></script>
+    <script type="text/javascript" src="{% static 'pc/common/js/ui/loadmask.js' %}?v=biyao_5aac5cc"></script>
+    <script type="text/javascript" src="{% static 'pc/buy/js/commonre.js' %}?v=biyao_27f335b"></script>
+    <script type="text/javascript" src="{% static 'pc/minisite/byshoes/js/jquery.cookie.js' %}?v=biyao_a5283b2"></script>
+
+    <script type="text/javascript">
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for (var i = 0; i < strs.length; i++) {
+                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+        var Request = new Object();
+        Request = GetRequest();
+        if(!$.cookie("source")){
+            $.cookie('source', Request['source'],{domain:"biyao.com",path:"/"});
+        }
+    </script>
+</head>
+<body>
+
+<!-- 新版首页 -->
+<div class="pub_nav">
+    <div class="wrap clearfix">
+        <div class="f_l">
+            <ul class="pub_nav_list sizeZero">
+                <li class="inline"><a href="/">首页</a><span class="bg"></span></li>
+                <li class="inline"><a href="{% url 'users:sjzx' %}">商家中心</a><span class="bg"></span></li>
+                <li class="inline"><a href="{% url 'users:sjzx' %}">平台政策</a><span class="bg"></span></li>
+                <!--   					<li class="inline last"><a href="list.html#complaint/toAddComplaint">非法信息投诉</a></li> -->
+                <li class="inline last newapp">
+                    <a href="#">必要手机版</a>
+                    <div class="app_box">
+                        <span class="inline upArre"></span>
+                        <div class="con">
+                            <p class="sj_evm"></p>
+                            <p class="lineH24 col_999">必要手机版</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="f_r">
+            <ul class="pub_nav_list sizeZero">
+                <li class="inline">
+                    <a class="login"  href="MyOrder.html">
+                        Hi,by_3444810
+                    </a>
+                    <a class="regist mg_l10" href="list.html#account/logout">[ 退出 ]</a><span class="bg"></span>
+                </li>
+                <li class="inline last ">
+                    <a href="javascript:void(0);" class="">个人中心<i class="inline pep_bg mg_l10"></i></a>
+                    <div class="app_box">
+                        <span class="inline upArre"></span>
+                        <div class="bg_fff down_list_box">
+                            <a class="inline" href="MyOrder.html">我的订单</a>
+                            <!-- <a class="inline" href="list.html#MyCenter/MyWorksList.html">我的作品集</a> -->
+                            <!-- <a class="inline" href="list.html#MyCenter/MyCoupon.html">我的红包</a> -->
+                            <a class="inline" href="Profile.html">个人设置</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="inline last pd_r0 shopping_cart vTop">
+                    <a class="inline sizeZero" href="{% url 'shopcart:shopcars' %}">
+                        <i class="inline"></i>
+                        <span id="shopcarNumID" class="inline">购物车 {{user.shopcart_set.all|length}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="bd_bottom_ea">
+    <div class="wrap pub_logo_box clearfix">
+        <div class="pub_logo"><a href="index.html"><img alt="" src="{% static 'pc/common/img/logo.png' %}{% static '?v=biyao_3251680"></a></div>
+    </div>
+</div>
+</div><div class="wrap relative">
+    <div class="shopStepBox">
+        <div class="publicStepsbox">
+            <div class="car_step_icon car_step1"></div>
+            <ul class="clearfix car_step_txt">
+                <li class="checked">查看购物车</li>
+                <li>确认订单信息</li>
+                <li>在线付款</li>
+                <li>收货并评价</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="pd_b40">
+    <div class="wrap ie78">
+        <div class="lineH24 t_l  pd_t30 pd_b10 bd_b_d5c ">
+            <span class="f18 col_666 mg_l10 col_523">购物车</span>
+        </div>
+        <form action="" method="post">
+            <div class="comment_box">
+                <table class="sop_table1" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th colspan="2" width="15%" align="left" class="pd_l10"><label
+                                class="checked checkbox" name="chkAll"><i
+                                class="openIcon inline mg_r10"></i></label><span class="col_523">全选</span></th>
+                        <th align="left" class="col_523">商品信息</th>
+                        <th width="10%" align="center" class="col_523">单价</th>
+                        <th width="10%" align="center" class="col_523">数量</th>
+                        <th width="20%" align="center" class="col_523">包装</th>
+                        <th width="10%" align="center" class="col_523">小计</th>
+                        <th width="5%" align="center" class="col_523">操作</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="shoppingBox ">
+                <div class="order_title divdel" name="divTitle_130063" supplierid="130063">
+                    <label class="checked inline col_666 checkbox" name="chk_Supplier" data-value="130063">
+                        <i class="openIcon inline mg_r10"></i>
+                    </label>
+                    <!--暂时关闭IM入口，勿删-->
+                    <a>
+                        <span class="inline">商家：</span>
+                        <span id="J_product_name " class="inline col_666">GM服装</span>
+                    </a><!--暂时关闭IM入口，临时替换-->
+                </div>
+                <table class="sop_table1 lastTh tabledel bg_fff" cellpadding="0" cellspacing="0">
+                    {% for i in stopcars %}
+                    <tr>
+                        <td width="30" align="left" class="pd_l10">
+                            <input class="checked checkbox chk_Calc" checked type="checkbox" value="{{i.id}}">
+                            <!--<label class="checked checkbox chk_Calc"-->
+                                   <!--name="chk_130063"-->
+                                   <!--supplierid="130063"-->
+                                   <!--data-value="1211915"-->
+                                   <!--data-design="1300630049000000060"-->
+                                   <!--data-num="1">-->
+                                <!--<i class="openIcon inline"></i>-->
+                            <!--</label>-->
+                        </td>
+                        <td width="130" align="left">
+                            <span class="sop_img inline">
+                                <a target="_blank" href="{% url 'goods:details_goods' i.goods_id %}">
+                                    {% for j in i.goods.goodsimage_set.all %}
+                                        {% if j.status %}
+                                        <img width="100" height="100" src="/{{j.path}}" />
+                                        {% endif %}
+                                    {% endfor %}
+                                </a>
+                            </span>
+                        </td>
+                        <td align="left">
+                            <a target="_blank" href="product.html#/1300630049000000060-0.html">
+                                <span class="col_523">{{i.goods.name}}</span>
+                            </a>
+                            <br />
+                            <div class="col_999 inline mg_t5">尺码:38<br/>签名:无</div>
+                            <br />
+                            <a id="material_list" designid="1300630049000000060" href="#" class="col_aaa inline mg_t5 material_list">用料清单>></a>
+                            <br />
+
+                        </td>
+                        <td width="10%" align="center" class="ff6600">¥{{i.goods.price}}</td>
+                        <td width="10%" align="center" class="sizeZero">
+                            <input type="hidden" name="num" value="{{i.count}}">
+                            <i class="sign minus inline"></i>
+                            <input name ="quantity" type="text" maxlength="3" name="input_1211915"
+                                   value="{{i.count}}" shopcarid="1211915"
+                                   discount="0.0" price="369.0"
+                                   num="{{i.count}}" packageprice="0.0"
+                                   modelid="1300630049" supplierid="130063"
+                                   designid="1300630049000000060" sizename="尺码:38"
+                                   class="inpCom w40 inline t_c">
+                            <i class="sign plus inline"></i>
+                            <p class="col_b76 mg_t5"></p>
+                        </td>
+                        <td width="20%" align="center" class="col_666">
+                            <span class="span_package_type">普通包装</span>
+                            <span class="span_package_price pack_selects">(免费)</span>
+                        </td>
+                        <td width="10%" align="center"><strong class="ff6600">¥{{i.subtotal}}</strong></td>
+                        <td width="5%" align="center"><a href="javascript:;" class="link_09c a_delete" id="deleteLink" data="1211915"></a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="firmbox pd_t10 bg_fff tj_box">
+                <div class="lineH30  pd_l10 pd_r10 clearfix ">
+                    <div class="f_l">
+                        <label class="checked inline checkbox" name="chkAll"><i
+                                class="openIcon inline mg_r10"></i></label><span class="inline">全选</span> <a
+                            href="javascript:;" class="inline mg_l10 mg_r10 col_link"
+                            id="a_BatchDel">删除</a>
+                    </div>
+                    <div class="f_r col_666 f14">
+                        商品总价：<span class="w80 inline col_f60 pd_r5 f14" id="totalPrice">¥{{resault}}</span>
+                    </div>
+                    <span class="inline f_r mg_r30 col_666 f14">商品总数 <em class="col_f60  f14" id="totalNum">{{stopcars|length}}</em> 件</span>
+
+                </div>
+                <div class="lineH30  pd_l10 pd_r10 clearfix ">
+                    <div class="f_r col_666 f14">
+
+                        包装费：<span class="w80 inline col_f60 pd_r5" id="packagePrice">¥0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="tallyBox">
+                <a href="/"
+                   class="inline goonShopping ">继续购物</a>
+                <a href="javascript:;"
+                   class=" tallyBTnPos inline span_submit_calre js_btn">结算</a>
+                <p class="t_r">
+                    合计（不含运费）：<span class="f20 ff6600 inline vTop priceDisplay jsjs">
+                    ¥{{resault}}</span><span class="inline f14 fb ff6600 vTop mg_l5"></span>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    window.MainSite = "http://www.biyao.com";
+</script>
+<script type="text/javascript"
+        src="{% static 'pc/common/js/common.js' %}?v=biyao_52bff81"></script>
+<script type="text/javascript"
+        src="{% static 'pc/common/js/ui/dialog.js' %}?v=biyao_ba57fb5"></script>
+<script type="text/javascript"
+        src="{% static 'pc/common/js/ui/select.js' %}?v=biyao_1dcaa7c"></script>
+<script type="text/javascript"
+        src="{% static 'pc/common/js/ui/autocomplete.js' %}?v=biyao_bd4725d"></script>
+<script type="text/javascript"
+        src="{% static 'pc/common/js/ui/jquery.pagination.js' %}?v=biyao_1a0a135"></script>
+<script type="text/javascript"
+        src="{% static 'pc/common/js/ui/pages.js' %}?v=biyao_5fd7a00"></script>
+<script type="text/javascript"
+        src="{% static 'pc/www/js/utility/qrcode.js' %}?v=biyao_8c0b79c"></script>
+<script type="text/javascript"
+        src="{% static 'pc/buy/js/shopcarDes.js' %}?v=biyao_ba3e6ae"></script>
+<script type="text/javascript"
+        src="{% static 'pc/www/js/product/lazyloadIM.js' %}?v=biyao_c5ce53c"></script>
+
+<script type="text/javascript" src="{% static 'pc/common/js/lazyload.js' %}?v=biyao_80d4f78"></script>
+
+<script type="text/javascript" src="{% static 'pc/buy/js/materiallistDes.js' %}?v=biyao_21283ab"></script>
+<script type="text/template" id="materialsOfProductTemplate">
+    <div class="pop_bd pd_t15 clearfix">
+        <ul class="sizeZero ml_list">
+        </ul>
+    </div>
+</script><div data-selector="J_im" id="webIM_showDiv"></div>
+<div class="footer_links clearfix J_1200 auto">
+    <div class="content wrap sizeZero">
+        <div class="footer_nav_box inline">
+            <ul class="footer_nav_list clearfix">
+                <li>
+                    <a target="_blank" href="list.html#minisite/ljby">关于必要</a>
+                    <span class="bg_line"></span>
+                </li>
+                <li>
+                    <a target="_blank" href="list.html#help/8.html">加入必要</a>
+                    <span class="bg_line"></span>
+                </li>
+                <li>
+                    <a target="_blank" href="tel.html">联系我们</a>
+                    <span class="bg_line"></span>
+                </li>
+                <li class="none">
+                    <a target="_blank" href="list.html#list/39/list-1.html">网站地图</a>
+                </li>
+                <li>
+                    <a target="_blank" href="tel.html">官方微博</a>
+                    <span class="bg_line"></span>
+                </li>
+
+            </ul>
+            <p class="col_999 lineH18 mg_t10">◎BIYAO.COM 2015 版权所有
+            </p>
+            <p class="col_999 lineH18 mg_t10"><i class="gwab_icon inline"></i><a class="col_999 inline mg_r5" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44049102496139" target="_blank">粤公网安备44049102496139号</a> <a class="col_999 inline" href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action" target="_blank">粤ICP备13088531号</a>
+            </p>
+        </div>
+        <div class="footer_evm sizeZero inline">
+            <div class="inline mg_r40 footer_evm_img">
+                <div class="an_bg inline mg_r15"></div>
+                <div class="inline evm_tit_msg">
+                    <span class="col_333 f14">扫描二维码下载</span><br/>
+                    <span class="col_724 f14">必要手机客户端</span>
+                </div>
+            </div>
+            <div class="inline mg_r10 footer_evm_img">
+                <div class="weixin_bg inline mg_r15"></div>
+                <div class="inline evm_tit_msg">
+                    <span class="col_333 f14">扫描二维码关注</span><br/>
+                    <span class="col_724 f14">必要官方微信</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><script type="text/javascript" src="{% static 'pc/www/js/common.js' %}?v=biyao_2bb680a"></script>
+<script type="text/javascript" src="{% static 'pc/common/js/bytrack.js' %}"></script>
+</body>
+
+</html>

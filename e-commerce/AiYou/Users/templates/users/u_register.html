@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block title %}
+注册
+{% endblock %}
+{% block top %}
+{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="bd_bottom_ea">
+    <div class="wrap pub_logo_box clearfix">
+        <div class="pub_logo f_l"><a href="/home/index.html"><img alt=""
+                                                                  src="{% static 'pc/www/img/logo.png' %}?v=biyao_4637d54"></a>
+        </div>
+        <div class="f_r">
+            <ul class="sizeZero merchant_info_box">
+                <li class="inline mg_l40 mg_t40">
+                    <span class="inline col_8c8">欢迎来到必要，请 </span><a class="col_8c8 inline mg_l5"
+                                                                    href="{% url 'users:u_login' %}">登录 </a><span
+                        class="col_8c8 mg_l5 mg_r5 inline">|</span><a class="col_8c8 inline" href="{% url 'users:u_register' %}">注册</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="wrap">
+    <div class="loginItem auto ">
+        <form method="post" action="{% url 'users:u_register' %}" onsubmit="return check()">
+            {% csrf_token %}
+            <div class="loginBox">
+                <div class="inline loginTitBox"><i class="inline loginListBg spIcon mg_r10"></i><span class="inline">新用户注册</span>
+                </div>
+                <dl class="mg_t20">
+                    <!-- <dt class="inline">账号：</dt> -->
+                    <dd class="inline mg_r5">
+                        <input type="text" class="loginTxt w360 col_999 border" name="username" id="username" autocomplete="off" placeholder="请输入账号"/><span class="prompt" style="color:red"></span>
+                    </dd>
+                </dl>
+                <dl class="mg_t20">
+                    <!-- 	<dt class="inline">昵称：</dt> -->
+                    <dd class="inline mg_r5">
+                        <input type="text" class="loginTxt w360 col_999 border" name="mickname" id="mickname" autocomplete="off" placeholder="请输入昵称"/><span class="prompt" style="color:red"></span>
+                    </dd>
+                </dl>
+
+                <dl class="mg_t20">
+                    <!-- 			<dt class="inline">密码：</dt> -->
+                    <dd class="inline mg_r5">
+                        <input name="password" id="password" type="password" minlength="6" maxlength="18" placeholder="请输入密码" class=" loginTxt border w360 col_999"/><span class="prompt" style="color:red"></span>
+                    </dd>
+
+                </dl>
+                <dl class="mg_t20">
+                    <!-- <dt class="inline">确认密码：</dt> -->
+                    <dd class="inline mg_r5">
+                        <input name="password1" id="password1" type="password"  minlength="6" maxlength="18" placeholder="确认密码" class=" loginTxt border w360 col_999"/><span class="prompt" style="color:red"></span>
+                    </dd>
+                </dl>
+                <dl class="mg_t20">
+                    <!--   <dt class="inline">&nbsp</dt> -->
+                    <dd class="inline">
+                        <label class="inline col_666 mg_r10 checked" id="ckfw"><i
+                                class="openIcon inline mg_r10"></i><span name="consent-agreement"
+                                                                         class="inline col_8a8a8a">我已阅读并同意</span></label>
+                        <a target="_blank" class="inline col_link mg_r10"
+                           id="linkServiceAgreement">《必要服务协议》</a><span class="isxt"></span>
+                    </dd>
+                </dl>
+                <input type="submit" class="loginBtn w400 inline t_c mg_t20" value="注册"/>{{mag}}
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    <!--阻止from表单提交-->
+    function check(){
+        var username = $('#username').val()
+        var mickname = $('#mickname').val()
+        var password = $('#password').val()
+        var password1 = $('#password1').val()
+        if(username == '' || mickname == '' || password == '' || password1 == ''){
+            alert("文本框输入为空，不能提交表单！");
+            return false;
+        }
+    }
+
+    $(function(){
+        <!--判断账号-->
+        $('#username').on('blur',function(){
+            var username = $('#username')
+            if(username.val() == ''){
+                $('.prompt:eq(0)').text('账号不能为空')
+            }
+            else{
+                $('.prompt:eq(0)').text('')
+                $.ajax({
+                    'url':'/users/ajax_reg/',
+                    'type':'GET',
+                    'data':{'username':username.val()},
+                    'dataType': 'json',
+                    'success':function(data){
+                         $('.prompt:eq(0)').text(data['username'])
+                    }
+                })
+            }
+
+        })
+        <!--判断昵称-->
+        $('#mickname').on('blur',function(){
+            var mickname = $('#mickname')
+            if(mickname.val() == ''){
+                $('.prompt:eq(1)').text('账号不能为空')
+            }
+            else{
+                $('.prompt:eq(1)').text('')
+                $.ajax({
+                    'url':'/users/ajax_reg/',
+                    'type':'GET',
+                    'data':{'mickname':mickname.val()},
+                    'dataType': 'json',
+                    'success':function(data){
+                         $('.prompt:eq(1)').text(data['mickname'])
+                    }
+                })
+            }
+        })
+        <!--判断密码-->
+        $('#password1').on('blur',function(){
+            var password = $('#password').val()
+            var password1 = $('#password1').val()
+            if(password != password1){
+                $('.prompt:eq(3)').text('密码不一致')
+            }
+            else{$('.prompt:eq(3)').text('')}
+        })
+
+
+
+    })
+
+</script>
+{% endblock %}
+
+

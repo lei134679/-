@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}
+个人信息
+{% endblock %}
+{% load static %}
+{% block head %}
+<link type="text/css" href="{% static 'pc/www/css/myCenter.css' %}"
+      rel="stylesheet"/>
+{% endblock %}
+
+
+{% block content %}
+<div class="wrap  posR mg_t20 mH810 pd_b40">
+    <div class="per_left">
+        <div class="per_leftbox  pd_t14">
+            <ul class="per_leftul">
+                <li class="t_c">
+                    <a href="Profile.html">
+
+                        <img src="/{{user.users.header}}" alt=""
+                             onerror="javascript:this.src='pc/www/img/avatar/head_150.png'"
+                             style="width: 150px; height: 150px"/>
+                    </a>
+                </li>
+                <li class="f14 col_fff mg_t10 t_c">{{user.users.mickname}}</li>
+            </ul>
+        </div>
+        <div class="per_leftbox">
+            <div class="perleft_menu pdtb_20">
+                <ul>
+                    <li class=" "><a href="MyOrder.html"><i class="f_r mcMIcon3 inline"></i>我的订单</a></li>
+                    <li class=" "><a href="MyRefunds.html"><i class="f_r mcMIcon4 inline"></i>退款管理</a></li>
+                    <!--<li class=" "><a href="/MyCenter/MyIncomeRules.html" ><i class="f_r mcMIcon5 inline"></i>我的收益</a></li>-->
+                    <li class=" "><a href="{% url 'users:u_message' %}"><i class="f_r mcMIcon8 inline"></i>个人设置</a></li>
+                    <li class="a_check "><a href="{% url 'store:my_store' %}"><i class="f_r mcMIcon8 inline"></i>我的店铺</a></li>
+                    <!-- <div class="div_line"></div> -->
+                    <!-- <a href="#"><i class="f_r mcMIcon9 inline"></i>设计师主页</a> <a
+                        href="#"><i class="f_r mcMIcon10 inline"></i>设计师提现</a> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="per_right_out backg_fff">
+        <div class="per_right ">
+            <div class="">
+                <div class="relative">
+                    <h4 class="nTitle">店铺管理</h4>
+                    <h3 class="per_title">
+                        <a class="" href="{% url 'store:on_store' %}"><span>注册店铺</span></a>
+                        <a class="" href="{% url 'store:my_store' %}"><span>我的店铺</span></a>
+                    </h3>
+                </div>
+                <div class="pd10 bd_b_eee">
+                    <h4 class="f14 col_666 mg_t20">基本信息</h4>
+                    <form method="post" id="submitForm" action="{% url 'store:alt_store' store.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <table cellspacing="0" cellpadding="0" border="0"
+                               class="per_table th80">
+                            <tbody>
+
+                            <tr>
+                                <th>店铺名称：</th>
+                                <td><input type="text" placeholder="请输入店铺名称" value="{{store.name}}" autocomplete="off" class="inpCom w200" minlength="3" maxlength="18" name="name"></td>
+                            </tr>
+                            <tr>
+                                <th>店铺封面：</th>
+                                <td>/{{store.cover}}</td>
+                            </tr>
+                            <tr>
+                                <th>修改封面：</th>
+                                <td><input type="file" value="/{{store.cover}}" autocomplete="off" class="inpCom w200" minlength="6" maxlength="18" name="cover"></td>
+                            </tr>
+                            <tr>
+                                <th>店铺描述：</th>
+
+                                <td>
+                                    <textarea style="height:100px" class="inpCom w200" name="intro">
+                                        {{store.intro}}
+                                    </textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>店铺状态：</th>
+                                <td>
+                                    {% if store.status %}
+                                    <input type="radio" value="True" name="status" checked>开店
+                                    <input type="radio" value="False" name="status ">关店
+                                    {% else %}
+                                    <input type="radio" value="True" name="status" >开店
+                                    <input type="radio" value="False" name="status" checked>关店
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <span style="color:red">{{mag}}</span>
+                            </tbody>
+                        </table>
+                        <p class="per_imgp clearfix mg_l40">
+                            <input type="submit" class="btnCom1 btnComS btnBg2 btnH1 w80 inline J_save">
+
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>>
+<script type="text/javascript">
+
+    $(function () {
+        $("#txtNickname").blur(function () {
+            $("#nicknameHint").text("");
+            if ($.trim($(this).val()) == '') {
+                $("#nicknameHint").text("昵称不能为空!");
+            }
+        });
+    });
+</script>
+
+{% endblock %}

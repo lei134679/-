@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}
+必要 - 全球首家C2M电子商务平台
+{% endblock %}
+{% load static %}
+{% block content %}
+<!-- 这个jsonp是为了静态化页面调用的，静态化以后利用它获得购物车数量和登录信息 -->
+<script type="text/javascript">
+    $(function(){
+        var uid=$.cookie('uid');
+        if (typeof (uid) != "undefined") {
+            $.ajax({
+                url : 'list.html#home/getDataForHomePage',
+                dataType : 'jsonp',
+                data : {'uid' : uid},
+                jsonpCallback : 'callback',
+                success : function(data) {
+                    if(data.success=="1"){
+                        $("#welcomID").html('<li class="inline"><a class="login" href="MyOrder.html">Hi,'+data.nickname+'<a class="regist  mg_l10" href="list.html#account/logout">[ 退出 ]</a></li>');
+                    }
+                }
+            });
+        }
+    })
+</script>
+<script type="text/javascript">
+    document.domain="biyao.com";
+    $("title").html("商家中心");
+</script>
+<link rel="stylesheet" type="text/css" href="{% static 'pc/www/css/home.css' %}?v=biyao_b551ce1"/>
+<script type="text/javascript">
+    var t = n = 0, count;
+    $(function() {
+
+        count = $("#banner_switch_list li").length;
+        $("#banner_switch_list li:not(:first-child)").hide();
+        $("#banner_switch .xb li").click(function() {
+            var i = $(this).text() - 1;//获取Li元素内的值，即1，2，3，4
+            n = i;
+            if (i >= count)
+                return;
+            $("#banner_switch_list li").filter(":visible").fadeOut().parent().children().eq(i).fadeIn();
+            $(this).toggleClass("checked");
+            $(this).siblings().removeClass("checked");
+        });
+        t = setInterval("showAuto()", 8000);
+        $("#banner_switch ").hover(function() {
+            clearInterval(t)
+        }, function() {
+            t = setInterval("showAuto()", 8000);
+        });
+
+        if(LT.temp.loginFn.islogin_dialog(false)){ //已经登录
+            $("a").each(function(){
+                if($(this).attr("href") == "register.html"){
+                    $(this).attr("href","javascript:void('0');").attr("onclick","LT.alertSmall('您已登录，无需注册');");
+                }
+            })
+        }
+
+    });
+
+    function showAuto() {
+        n = n >= (count - 1) ? 0 : ++n;
+        $("#banner_switch .xb li").eq(n).trigger('click');
+    }
+</script>
+
+<script type="text/javascript" src="http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/js/jquery.onepage-scroll.js"></script>
+<style type="text/css">
+    * { margin:0; padding:0; word-break:break-all; }
+    ul,ol,li,dl,dt,dd{ margin:0px; padding:0px; border:0px; list-style:none; display:block; }
+    body, html {margin: 0;-webkit-transition: opacity 400ms;-moz-transition: opacity 400ms;transition: opacity 400ms;}
+    body, .onepage-wrapper, html {display: block;position: static;padding: 0;width: 100%;height: 100%;}
+    .onepage-wrapper {width: 100%;height: 100%;display: block;position: relative;padding: 0;-webkit-transform-style: preserve-3d;}
+    .onepage-wrapper .section {width: 100%;height: 100%;}
+    .onepage-wrapper .section div{background-size:1366px auto;background-repeat:no-repeat;background-position:center;height:100%;}
+    @media screen and (min-width:1367px) and (max-width:1440px) {
+        .onepage-wrapper .section div{background-size:1550px auto;}
+    }
+    @media screen and (min-width:1441px) and (max-width:1600px){
+        .onepage-wrapper .section div{background-size:1600px auto;}
+    }
+    @media screen and (min-width:1601px){
+        .onepage-wrapper .section div{background-size:1920px auto;}
+    }
+    .onepage-wrapper .section div a{display:block;width:100%;height:100%;}
+    .onepage-pagination {position:absolute;right:75px;top:30%;z-index:5;height:250px}
+    /*.onepage-pagination li{width:26px;height:26px;}*/
+    .onepage-pagination li a{width:10px;height:10px;display:block;}
+    .onepage-pagination li a:before{content:'';position:absolute;width:10px;height:10px;background:url(http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/img/dot.png) 0 -21px no-repeat;}
+    .onepage-pagination li a.active:before{width:10px;height:10px;background:url(http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/img/dot.png) 0 0 no-repeat;}
+    .disabled-onepage-scroll, .disabled-onepage-scroll .wrapper {overflow:auto;}
+    .disabled-onepage-scroll .onepage-wrapper .section {position: relative !important;top: auto !important;left: auto !important;}
+    .disabled-onepage-scroll .onepage-wrapper {-webkit-transform: none !important;-moz-transform: none !important;transform: none !important;-ms-transform: none !important; min-height: 100%;}
+    .disabled-onepage-scroll .onepage-pagination {display: none;}
+    body.disabled-onepage-scroll, .disabled-onepage-scroll .onepage-wrapper, html {position: inherit;}
+    .block {display:block;}.none{display:none;}.hide{display:none;}.show{display:block;}
+    .f_l{float:left;}.f_r{float:right;}
+    .line{ width:3px; height:98px; background:#fff; margin-left:6px;margin-top:-2px}
+    li{ position:relative;}
+    .active .line{ height:125px;}
+    .active .Circle{ width:10px; height:10px; background:url(http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/img/dot.png) no-repeat; background-position:0px -21px;  position:absolute; z-index:2;}
+    .droll_under{ height:38px; line-height:38px;position:absolute;z-index:1; border-radius:20px; top:-11px; *top:-1px;behavior:url(ie-css3.htc); right:0px; }
+    .droll_under span{ color:#ff9b00;font-family:"微软雅黑"; font-size:17px; padding:0px 40px 0px 11px;}
+</style>
+<script type="text/javascript">
+    $(".J_T1200").addClass("none");
+</script>
+<div class="J_T1200 none">
+
+</div>
+<div class="main" id="go"> <section title=''><div style='background-image:url(http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/img/20150312113711.jpg);width:100%;height:100%;background-position:center top;'> </div></section> <section title=''><div style='background-image:url(http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/img/20150312113725.jpg);width:100%;height:100%;background-position:center top;'> </div></section> <section title=''><div style='background-image:url(http://img.biyao.com/files/data0//minisite/dea0075b52f345ebbecdbb68d5375a3b/20150324042314/img/20150324042252.jpg);width:100%;height:100%;background-position:center bottom;'> </div></section></div>
+<script type="text/javascript">
+    var isIE = !!window.ActiveXObject;
+    var isIE6 = isIE && !window.XMLHttpRequest;
+    if (isIE) {
+        var browser = getbrowserinfo();
+        //如果是IE6-8，则直接显示所有图片，不用滑动
+        if (isIE6 || browser == "IE 8.0" || browser == "IE 7.0") {
+            backgroundimagebrowser();
+        } else {
+            onepagescroll();
+        }
+    }
+    else {
+        onepagescroll();
+    }
+    function backgroundimagebrowser() {
+        var height = document.body.clientHeight;
+        $("#go").find("div").css("height", height);
+        $(".J_T1200").show();
+        $(".J_1200").show();
+    }
+    function onepagescroll() {
+        $("#pagebody").css("overflow", "hidden");
+        $(".main").onepage_scroll({
+            sectionContainer: "section",
+            easing: "linear",
+            animationTime: 300,
+            pagination: true,
+            updateURL: false
+        });
+    }
+    function getbrowserinfo() {
+        var Sys = {};
+        var ua = navigator.userAgent.toLowerCase();
+        var s;
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+                (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                        (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                                (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+        if (Sys.ie) return 'IE ' + Sys.ie;
+        if (Sys.firefox) return 'Firefox ' + Sys.firefox;
+        if (Sys.chrome) return 'Chrome ' + Sys.chrome;
+        if (Sys.opera) return 'Opera ' + Sys.opera;
+        if (Sys.safari) return 'Safari ' + Sys.safari;
+    }
+</script>
+
+<script type="text/javascript" src="{% static 'pc/minisite/shopsMiniSite/js/attention.js' %}?v=biyao_2be4791"></script>
+
+<!-- <script>
+var _hmt = _hmt || [];
+(function() {
+	var hm = document.createElement("script");
+	hm.src = "//hm.baidu.com/hm.js?8263bc34c44278c176458d5aca724aed";
+	var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);
+})();
+</script> -->
+{% endblock %}

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block title %}
+个人中心-管理收货地址 – 我要的，才是必要的 – 必要biyao.com
+{% endblock %}
+{% load static %}
+{% block head %}
+<link type="text/css" href="{% static 'pc/www/css/myCenter.css' %}" rel="stylesheet"/>
+<script src="{% static 'pc/common/js/ui/loadmask.js' %}" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="wrap  posR mg_t20 mH810 pd_b40">
+    <div class="per_left">
+        <div class="per_leftbox  pd_t14">
+            <ul class="per_leftul">
+                <li class="t_c">
+                    <a href="Profile.html">
+
+                        <img src="/{{user.users.header}}" alt=""
+                             onerror="javascript:this.src='pc/www/img/avatar/head_150.png'"
+                             style="width: 150px; height: 150px"/>
+                    </a>
+                </li>
+                <li class="f14 col_fff mg_t10 t_c">{{user.users.mickname}}</li>
+            </ul>
+        </div>
+        <div class="per_leftbox">
+            <div class="perleft_menu pdtb_20">
+                <ul>
+                    <li class=" "><a href="MyOrder.html"><i class="f_r mcMIcon3 inline"></i>我的订单</a></li>
+                    <li class=" "><a href="MyRefunds.html"><i class="f_r mcMIcon4 inline"></i>退款管理</a></li>
+                    <!--<li class=" "><a href="/MyCenter/MyIncomeRules.html" ><i class="f_r mcMIcon5 inline"></i>我的收益</a></li>-->
+                    <li class="a_check "><a href="{% url 'users:u_message' %}"><i class="f_r mcMIcon8 inline"></i>个人设置</a></li>
+                    <!-- <div class="div_line"></div> -->
+                    <!-- <a href="#"><i class="f_r mcMIcon9 inline"></i>设计师主页</a> <a
+                        href="#"><i class="f_r mcMIcon10 inline"></i>设计师提现</a> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="per_right_out backg_fff">
+        <div class="per_right ">
+            <div class="">
+                <div class="relative">
+                    <h4 class="nTitle">个人设置</h4>
+                    <h3 class="per_title">
+                        <a class="a_checked" href="{% url 'users:u_message' %}"><span>个人信息</span></a>
+                        <a href="{% url 'users:address' %}"><span>管理收货地址</span></a>
+                        <a class="bd_r_none" href="{% url 'users:alt_pwd' %}" id="forgetPasswordID"><span>修改密码</span></a>
+                    </h3>
+                </div>
+                <form method="post" id="formAddress">
+                    <div class="pd10">
+                        <input type="hidden" data-highlight="highlight" maxlength="16" value="0"  name="isUpdate">
+                        <input class="J_hide" type="hidden" id="hid_province" name="province" />
+                        <input class="J_hide" type="hidden" id="hid_city" name="city" />
+                        <input class="J_hide" type="hidden" id="hid_area" name="areaId" />
+                        <table border="0" cellspacing="0" class="per_table th80">
+                            <tbody><tr>
+                                <th>
+                                    <span class="col_ee5b47"></span>收货人姓名：
+                                </th>
+                                <td>
+                                    <input type="text" data-highlight="highlight" maxlength="64" value="" name="receiver" class="inpCom w200 permy">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="col_ee5b47"></span>省市：
+                                </th>
+                                <td>
+                                    <div class="J_province w120 mg_r10 posR f_l permy"><div class="J_select"><span class="sel_span" data-value="">--请选择--</span><div class="sel_div" style="height: 0px;"><ul class="sel_ul"><li data-value="" data-hover="hover">--请选择--</li><li data-value="110000" data-hover="hover">北京市</li><li data-value="120000" data-hover="hover">天津市</li><li data-value="130000" data-hover="hover">河北省</li><li data-value="140000" data-hover="hover">山西省</li><li data-value="150000" data-hover="hover">内蒙古自治区</li><li data-value="210000" data-hover="hover">辽宁省</li><li data-value="220000" data-hover="hover">吉林省</li><li data-value="230000" data-hover="hover">黑龙江省</li><li data-value="310000" data-hover="hover">上海市</li><li data-value="320000" data-hover="hover">江苏省</li><li data-value="330000" data-hover="hover">浙江省</li><li data-value="340000" data-hover="hover">安徽省</li><li data-value="350000" data-hover="hover">福建省</li><li data-value="360000" data-hover="hover">江西省</li><li data-value="370000" data-hover="hover">山东省</li><li data-value="410000" data-hover="hover">河南省</li><li data-value="420000" data-hover="hover">湖北省</li><li data-value="430000" data-hover="hover">湖南省</li><li data-value="440000" data-hover="hover">广东省</li><li data-value="450000" data-hover="hover">广西壮族自治区</li><li data-value="460000" data-hover="hover">海南省</li><li data-value="500000" data-hover="hover">重庆市</li><li data-value="510000" data-hover="hover">四川省</li><li data-value="520000" data-hover="hover">贵州省</li><li data-value="530000" data-hover="hover">云南省</li><li data-value="540000" data-hover="hover">西藏自治区</li><li data-value="610000" data-hover="hover">陕西省</li><li data-value="620000" data-hover="hover">甘肃省</li><li data-value="630000" data-hover="hover">青海省</li><li data-value="640000" data-hover="hover">宁夏回族自治区</li><li data-value="650000" data-hover="hover">新疆维吾尔自治区</li></ul><div class="scr_com sel_scroll" style="height: 0px;"><div class="scr_monsemove sel_scroll_btn"></div> </div></div></div>
+                                        <input type="hidden" name="province" id="hid_province" class="J_hide">
+                                        <input type="text" class="absolute hidden_input2" name="J_sel_input"></div>
+                                    <div class="J_city w120 mg_r10 posR f_l permy"><div class="J_select"><span class="sel_span" data-value="">--请选择--</span><div class="sel_div" style="height: 0px;"><ul class="sel_ul"><li data-value="" data-hover="hover">--请选择--</li></ul><div class="scr_com sel_scroll" style="height: 0px;"><div class="scr_monsemove sel_scroll_btn"></div> </div></div></div>
+                                        <input type="hidden" name="city" id="hid_city" class="J_hide">
+                                        <input type="text" class="absolute hidden_input2" name="J_sel_input"></div>
+                                    <div class="J_area w140 f_l posR permy permyre"><div class="J_select"><span class="sel_span" data-value="">--请选择--</span><div class="sel_div" style="height: 0px;"><ul class="sel_ul"><li data-value="" data-hover="hover">--请选择--</li></ul><div class="scr_com sel_scroll" style="height: 0px;"><div class="scr_monsemove sel_scroll_btn"></div> </div></div></div>
+                                        <input type="hidden" name="addr_area_id" id="hid_area" class="J_hide">
+                                        <input type="text" class="absolute hidden_input2" name="J_sel_input"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="col_ee5b47"></span>街道地址：
+                                </th>
+                                <td>
+                                    <input type="text" data-highlight="highlight" maxlength="128" value="" class="inpCom w380 permy" name="address">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <span class="col_ee5b47"></span>手机号码：
+                                </th>
+                                <td>
+                                    <input type="text" data-highlight="highlight" maxlength="64" value="" class="inpCom w200 permy" name="phone">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>
+                                    <label class="checked J_default_address">
+                                        <i class="openIcon inline">
+
+                                        </i>&nbsp;设为默认地址
+                                    </label>
+
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td colspan="2"><a id="btn_SaveAddress" href="#" class="btnCom1 btnComS btnBg2 btnH1 w80 inline J_save"><span>确 定</span></a></td>
+                            </tr>
+                            </tbody></table>
+                    </div>
+                </form>
+                <h3 class="perTitle col_523 lineH24">已保存的地址</h3>
+                <table border="0" cellspacing="0" cellpadding="0" class="perTableTitle1">
+                    <tbody><tr>
+                        <td width="9%"><span class="inline">收货人</span></td>
+                        <td width="20%"><span class="inline">所在省市</span></td>
+                        <td width="30%"><span class="inline">街道地址</span></td>
+                        <td width="10%"><span class="inline">手机</span></td>
+                        <td width="10%"><span class="inline"></span></td>
+                        <td width="10%"><span class="inline">操作</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table border="0" cellspacing="1" cellpadding="0" class="J_table per_list1  bg_fff">
+                    <tbody>
+                    <tr data-addressid="476683">
+                        <td width="9%" class="J_td2">阿茂</td>
+                        <td width="20%" class="J_td3">
+                            北京市西城区<input type="hidden" value="110000" data-text="北京市">
+                            <input type="hidden" value="110100" data-text="市辖区">
+                            <input type="hidden" value="110102" data-text="西城区">
+                        </td>
+                        <td width="30%" align="left" class="J_td2">网路1</td>
+                        <td width="11%" class="J_td2">13303032929</td>
+                        <td width="10%" type="true" class="J_td">
+                            <span class="col_ee5b47">默认地址</span></td>
+                        <td width="10%"><a class="J_edit col_link" >修改</a> / <a class="J_dele col_link" >删除</a></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0; i<ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1);
+                if (c.indexOf(name) != -1) return c.substring(name.length, c.length);
+            }
+            return "";
+        }
+        if((typeof(getCookie("__qc__k"))!="undefined"&&getCookie("__qc__k")!="")||(typeof(getCookie("mobileNO"))!="undefined"&&getCookie("mobileNO")!="")){
+            $("#forgetPasswordID").html("");
+        }
+    </script></div>
+
+
+<script type="text/javascript">
+    $(function () {
+        var selector = '.J_default_address';
+        LT.setRadioEffect(selector);
+    });
+</script>
+{% endblock %}
